@@ -35,7 +35,7 @@ var win2 = Titanium.UI.createWindow({
     backgroundColor:'#fff'
 });
 var tab2 = Titanium.UI.createTab({  
-    icon:'KS_nav_ui.png',
+    // icon:'KS_nav_ui.png',
     title:'About',
     window:win2
 });
