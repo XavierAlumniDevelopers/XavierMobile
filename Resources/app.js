@@ -6,44 +6,43 @@ var tabGroup = Titanium.UI.createTabGroup();
 
 
 //
-// create base UI tab and root window
+// create RSS news feed tab and root window
 //
 var win1 = Titanium.UI.createWindow({  
     title:'Tab 1',
     backgroundColor:'#fff'
 });
 var tab1 = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
-    title:'Tab 1',
+    // icon:'KS_nav_views.png',
+    title:'Latest News',
     window:win1
 });
 
-var label1 = Titanium.UI.createLabel({
-	color:'#999',
-	text:'I am Window 1',
-	font:{fontSize:20,fontFamily:'Helvetica Neue'},
-	textAlign:'center',
-	width:'auto'
+//
+// create a tableview for the RSS feed
+//
+var newsFeed = Ti.UI.createTableView({
+    backgroundColor:'#fff'
 });
 
-win1.add(label1);
+win1.add(newsFeed);
 
 //
-// create controls tab and root window
+// create "about" tab and root window
 //
 var win2 = Titanium.UI.createWindow({  
-    title:'Tab 2',
+    title:'About',
     backgroundColor:'#fff'
 });
 var tab2 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
-    title:'Tab 2',
+    title:'About',
     window:win2
 });
 
 var label2 = Titanium.UI.createLabel({
 	color:'#999',
-	text:'I am Window 2',
+	text:'About Us...',
 	font:{fontSize:20,fontFamily:'Helvetica Neue'},
 	textAlign:'center',
 	width:'auto'
