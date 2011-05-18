@@ -12,7 +12,7 @@
     <version>1.0</version>
     <publisher>Xavier Alumni Developers</publisher>
     <url>http://developers.xaverians.com</url>
-    <description/>
+    <description>Xavier Mobile App</description>
     <copyright>2011 by Xavier Alumni Developers</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
