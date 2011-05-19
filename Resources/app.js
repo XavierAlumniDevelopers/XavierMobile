@@ -30,12 +30,6 @@ searchBar.addEventListener('return', function(e) {
 	nav.open(searchWin);
 });*/
 
-/* 
- * RSS BASED ON http://query7.com/titanium-mobile-android-development-first-application
- */
-
-var rssData = [];
-
 var w4Window = Ti.UI.createWindow({
 	backgroundImage:'bkg3.png',
    	// backButtonTitle:'Back',
@@ -56,7 +50,13 @@ var w4WindowTab = Ti.UI.createTab({
 
 tabGroup.addTab(w4WindowTab);
 
+/* 
+ * OLD RSS BASED ON http://query7.com/titanium-mobile-android-development-first-application
+ */
+
+/*
 // create table view
+var rssData = [];
 var w4RSS = Titanium.UI.createTableView({
 	data:rssData,
 	backgroundImage:'bkg3.png'
@@ -123,6 +123,119 @@ xhr.onload = function()
 
 xhr.open('GET', 'http://developer.appcelerator.com/blog/feed');
 xhr.send();
+*/
+/*
+ * END OLD RSS
+ */
+
+/*
+ * NEW RSS based on KitchenSink
+ */
+
+var refreshButton = Titanium.UI.createButton({
+	systemButton:Titanium.UI.iPhone.SystemButton.REFRESH,
+	title:"Refresh",
+	width:340,
+	height:50,
+	top:320
+});
+refreshButton.addEventListener('click',function()
+{
+	// reload feed
+	loadRSSFeed(url);	
+});
+w4Window.add(refreshButton)
+
+var url = 'http://developer.appcelerator.com/blog/feed';
+var data;
+
+function displayItems(itemList){
+
+	for (var c=0;c < itemList.length;c++){
+		
+		var title = null;
+		var postUrl = null;
+		
+			// Item title
+			title = itemList.item(c).getElementsByTagName("title").item(0).text;
+			// Item description
+			desc = itemList.item(c).getElementsByTagName("description").item(0).text;
+			// Item URL
+			postUrl = itemList.item(c).getElementsByTagName('link').item(0).text;
+
+			// Create a table row for this item
+			var row = Titanium.UI.createTableViewRow({
+				title: title,
+				postName: title,
+				postUrl: postUrl
+			});
+			
+			if(c == 0)
+			{
+				row.header = 'Xavier Website Feed';
+			}
+
+			row.addEventListener('click', function (e){
+				
+				nav.open(w4WebViewWindow,{animated:true});
+					w4WebViewWindow.title = e.source.postName;
+					var w4WebView = Ti.UI.createWebView({
+	 				   url:e.source.postUrl
+					});
+
+				w4WebViewWindow.add(w4WebView);
+				
+			});
+						
+			// Add the row to the data
+			data[c] = row;
+	}
+	
+	// create the table
+	feedTableView = Titanium.UI.createTableView({
+		data:data,
+		top:0,
+		height:320
+	});
+	
+	// Add the tableView to the current window
+	w4Window.add(feedTableView);
+}
+
+function loadRSSFeed(url){
+
+	data = [];
+	xhr = Titanium.Network.createHTTPClient();
+	xhr.open('GET',url);
+	xhr.onload = function()
+	{
+		try
+		{
+		// Now parse the feed XML 
+		var xml = this.responseXML;
+		
+		var itemList = xml.documentElement.getElementsByTagName("item");
+		
+		// Now add the items to a tableView
+		displayItems(itemList);
+		
+		refreshButton.title = 'Refresh'
+		}
+		catch(E)
+		{
+			refreshButton.title = 'Problem connecting!'
+		}
+
+	};
+	refreshButton.title = 'Refreshing...';
+	xhr.send();	
+}
+
+loadRSSFeed(url);
+
+/*
+ * END NEW RSS
+ */
 
 /*
  * TO DO: ADD A REFRESH OPTION
