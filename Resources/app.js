@@ -2,11 +2,17 @@ var win = Titanium.UI.createWindow({
 	title:"Window",
 	backgroundImage:"bkg3.png"
 });
-var mainWindow = Titanium.UI.createWindow({
-    title:"Xavier Mobile"
+
+var tabGroup = Ti.UI.createTabGroup();
+
+var mainTabWindow = Titanium.UI.createWindow({
+	title:"Xavier Mobile"
 });
+
+mainTabWindow.add(tabGroup)
+
 var nav = Titanium.UI.iPhone.createNavigationGroup({
-   window: mainWindow
+   window: mainTabWindow
 });
 
 // TO DO => SEARCH
@@ -31,10 +37,23 @@ searchBar.addEventListener('return', function(e) {
 var rssData = [];
 
 var w4Window = Ti.UI.createWindow({
-	title:"Xavier Website",
 	backgroundImage:'bkg3.png',
-   	backButtonTitle:'Back'
+   	// backButtonTitle:'Back',
+   	navBarHidden:true
 });
+
+var w4WebViewWindow = Ti.UI.createWindow({
+	backgroundImage:'bkg3.png',
+   	backButtonTitle:'Back',
+   	// navBarHidden:true
+});
+
+var w4WindowTab = Ti.UI.createTab({
+	title:"News",
+	window: w4Window
+});
+
+tabGroup.addTab(w4WindowTab);
 
 // create table view
 var w4RSS = Titanium.UI.createTableView({
@@ -42,7 +61,7 @@ var w4RSS = Titanium.UI.createTableView({
 	backgroundImage:'bkg3.png'
 });
 
-mainWindow.add(w4RSS);
+w4Window.add(w4RSS);
 
 var xhr = Titanium.Network.createHTTPClient();
 
@@ -78,13 +97,13 @@ xhr.onload = function()
 
 			row[c].addEventListener('click', function (e){
 				
-				nav.open(w4Window,{animated:true});
-					w4Window.title = e.source.postName;
+				nav.open(w4WebViewWindow,{animated:true});
+					w4WebViewWindow.title = e.source.postName;
 					var w4WebView = Ti.UI.createWebView({
 	 				   url:e.source.postUrl
 					});
 
-				w4Window.add(w4WebView);
+				w4WebViewWindow.add(w4WebView);
 				
 			});
 
@@ -100,13 +119,12 @@ xhr.onload = function()
 
 };
 
-xhr.open('GET', 'http://feeds.feedburner.com/MobileTuts?format=xml');
+xhr.open('GET', 'http://developer.appcelerator.com/blog/feed');
 xhr.send();
 
-w4RSS.addEventListener('scroll',function(e){
-	// needs improvement
-	xhr.send();
-});
+/*
+ * TO DO: ADD A REFRESH OPTION
+ */
 
 /*
  * End RSS code
@@ -116,10 +134,45 @@ var aboutButton = Ti.UI.createButton({
 	title: "About"
 });
 
-mainWindow.setRightNavButton(aboutButton);
-//mainWindow.add(searchBar);
+mainTabWindow.setRightNavButton(aboutButton);
+//w4Window.add(searchBar);
 win.add(nav);
 win.open();
+
+/*
+ * ABOUT XS WINDOW
+ */
+
+var aboutWindow = Ti.UI.createWindow({
+	title:"About XS",
+	navBarHidden:true
+});
+
+var aboutWindowTab = Ti.UI.createTab({
+	title:"XS",
+	navBarHidden:true,
+	window:aboutWindow
+});
+
+tabGroup.addTab(aboutWindowTab);
+
+var dummyAboutLabel = Ti.UI.createLabel({
+	color:'#999',
+	text:'Insert "About XS" here.',
+	font:{fontSize:14,fontFamily:'Helvetica Neue'},
+	textAlign:'center',
+	width:'auto'
+});
+
+aboutWindow.add(dummyAboutLabel);
+
+/*
+ * END ABOUT WINDOW
+ */
+
+/*
+ * ABOUT WINDOW
+ */
 
 var aboutWindow = Titanium.UI.createWindow({
     title:"About"
@@ -160,9 +213,9 @@ var developer1Label = Ti.UI.createLabel({
 });
 
 var xadWindow = Ti.UI.createWindow({
-		title:"XavierAlumniDevelopers",
-		backgroundImage:'bkg3.png',
-	    backButtonTitle:'Back'
+	title:"XavierAlumniDevelopers",
+	backgroundImage:'bkg3.png',
+	backButtonTitle:'Back'
 });
 
 
@@ -186,6 +239,12 @@ aboutButton.addEventListener('click', function(e) {
 	nav.open(aboutWindow,{animated:true});
 });
 
+/*
+ * ABOUT WINDOW END
+ */
+
 /*mainWindow.addEventListener('click', function(e) {
 	searchBar.blur();
 });*/
+
+tabGroup.open();
