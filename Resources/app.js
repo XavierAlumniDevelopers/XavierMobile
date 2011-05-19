@@ -50,6 +50,7 @@ var w4WebViewWindow = Ti.UI.createWindow({
 
 var w4WindowTab = Ti.UI.createTab({
 	title:"News",
+	icon:'news.png',
 	window: w4Window
 });
 
@@ -70,13 +71,14 @@ xhr.onload = function()
 
 	try
 	{
+		
 		var doc = this.responseXML.documentElement;
 		var items = doc.getElementsByTagName('item');
 		var doctitle = doc.evaluate("//channel/title/text()").item(0).nodeValue;
 
 		var urls = new Array();
 		var row = new Array();
-				
+		
 		for(var c=0; c<items.length;c++)
 		{
 			urls[c] = items.item(c).getElementsByTagName('link').item(0).text;
@@ -150,6 +152,7 @@ var aboutWindow = Ti.UI.createWindow({
 
 var aboutWindowTab = Ti.UI.createTab({
 	title:"XS",
+	icon:'i-icon.png',
 	navBarHidden:true,
 	window:aboutWindow
 });
