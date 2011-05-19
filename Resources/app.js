@@ -108,13 +108,13 @@ xhr.onload = function()
 			});
 
 			w4RSS.appendRow(row[c]);
-
+			
 		}
 
 	}
 	catch(E)
 	{
-		alert(E);
+		alert("An error has occured\n\nPlease send an Email to xad@xaverians.com with the error below:\n \n" + E);
 	}
 
 };
