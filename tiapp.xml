@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
 <id>com.avantbox.xaviermobile</id>
@@ -8,6 +9,25 @@
 <description>Xavier School Mobile App</description>
 <copyright>2011</copyright>
 <icon>default_app_logo.png</icon>
+=======
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+    <deployment-targets>
+        <target device="mobileweb">false</target>
+        <target device="iphone">true</target>
+        <target device="ipad">false</target>
+        <target device="android">true</target>
+        <target device="blackberry">false</target>
+    </deployment-targets>
+    <id>com.xaverians.developers.xaviermobile</id>
+    <name>Xavier Mobile</name>
+    <version>1.0</version>
+    <publisher>Xavier Alumni Developers</publisher>
+    <url>http://developers.xaverians.com</url>
+    <description>Xavier Mobile App</description>
+    <copyright>2011 by Xavier Alumni Developers</copyright>
+    <icon>appicon.png</icon>
+>>>>>>> 722008f09fe92eaabffa7ea881613f5132ae6108
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>default</statusbar-style>
@@ -15,7 +35,11 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>true</analytics>
+<<<<<<< HEAD
 <guid>a9e716af-7d6e-43e4-819c-e0e8e8ddade8</guid>
+=======
+    <guid>c658d101-5bbc-4d65-b8d0-8da72bb02b70</guid>
+>>>>>>> 722008f09fe92eaabffa7ea881613f5132ae6108
 	<iphone>
 		<orientations device="iphone">
 			<orientation>Ti.UI.PORTRAIT</orientation>
