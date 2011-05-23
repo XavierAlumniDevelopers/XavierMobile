@@ -1,6 +1,10 @@
 TI_VERSION=1.6.2
 TI_SDK_DIR=/Library/Application Support/Titanium/mobilesdk/osx/$(TI_VERSION)/iphone
+<<<<<<< HEAD
 TI_APPID=com.avantbox.xaviermobile
+=======
+TI_APPID=com.xaverians.developers.xaviermobile
+>>>>>>> 722008f09fe92eaabffa7ea881613f5132ae6108
 OTHER_LDFLAGS[sdk=iphoneos4*]=$(inherited) -weak_framework iAd
 OTHER_LDFLAGS[sdk=iphonesimulator4*]=$(inherited) -weak_framework iAd
 #include "module"
