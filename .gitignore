@@ -8,4 +8,4 @@ LICENSE.txt
 *.pyc
 *.pyo
 
-build*
+build/*
