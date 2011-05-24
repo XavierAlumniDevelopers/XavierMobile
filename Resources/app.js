@@ -146,7 +146,9 @@ refreshButton.addEventListener('click',function()
 });
 w4Window.add(refreshButton)
 
-var url = 'http://developer.appcelerator.com/blog/feed';
+var url = 'http://pipes.yahoo.com/pipes/pipe.run?_id=1dd14b3cfa6df4e718b7dee82118c78a&_render=rss';
+// var url = 'http://xavierstallion.tk/';
+
 var data;
 
 function displayItems(itemList){
