@@ -8,18 +8,18 @@
 #define STRING(x) _QUOTEME(x)
 
 NSString * const TI_APPLICATION_DEPLOYTYPE = @"development";
-NSString * const TI_APPLICATION_ID = @"com.xaverians.developers.xaviermobile";
+NSString * const TI_APPLICATION_ID = @"com.avantbox.xaviermobile";
 NSString * const TI_APPLICATION_PUBLISHER = @"Xavier Alumni Developers";
 NSString * const TI_APPLICATION_URL = @"http://developers.xaverians.com";
 NSString * const TI_APPLICATION_NAME = @"Xavier Mobile";
 NSString * const TI_APPLICATION_VERSION = @"1.0";
-NSString * const TI_APPLICATION_DESCRIPTION = @"";
+NSString * const TI_APPLICATION_DESCRIPTION = @"Xavier Mobile App";
 NSString * const TI_APPLICATION_COPYRIGHT = @"2011 by Xavier Alumni Developers";
 NSString * const TI_APPLICATION_GUID = @"c658d101-5bbc-4d65-b8d0-8da72bb02b70";
 BOOL const TI_APPLICATION_ANALYTICS = true;
 
 #ifdef TARGET_IPHONE_SIMULATOR
-NSString * const TI_APPLICATION_RESOURCE_DIR = @"/Users/Dodie/Documents/Titanium Studio Workspace/Xavier Mobile/Resources";
+NSString * const TI_APPLICATION_RESOURCE_DIR = @"/Users/jayson/Projects/Titanium/XavierMobile/Resources";
 #endif
 
 int main(int argc, char *argv[]) {
