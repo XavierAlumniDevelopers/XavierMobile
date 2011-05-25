@@ -7,3 +7,5 @@ LICENSE.txt
 *.class
 *.pyc
 *.pyo
+
+/build/iphone/build/*
