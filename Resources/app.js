@@ -1,3 +1,97 @@
+function strip_tags (str, allowed_tags) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: Luke Godfrey
+    // +      input by: Pul
+    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Onno Marsman
+    // +      input by: Alex
+    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +      input by: Marc Palau
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +      input by: Brett Zamir (http://brett-zamir.me)
+    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Eric Nagel
+    // +      input by: Bobby Drake
+    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Tomasz Wesolowski
+
+    // fixed Titanium warning by: Kosso
+
+    // *     example 1: strip_tags('<p>Kevin</p> <br /><b>van</b> <i>Zonneveld</i>', '<i><b>');
+    // *     returns 1: 'Kevin <b>van</b> <i>Zonneveld</i>'
+    // *     example 2: strip_tags('<p>Kevin <img src="someimage.png" onmouseover="someFunction()">van <i>Zonneveld</i></p>', '<p>');
+    // *     returns 2: '<p>Kevin van Zonneveld</p>'
+    // *     example 3: strip_tags("<a href='http://kevin.vanzonneveld.net'>Kevin van Zonneveld</a>", "<a>");
+    // *     returns 3: '<a href='http://kevin.vanzonneveld.net'>Kevin van Zonneveld</a>'
+    // *     example 4: strip_tags('1 < 5 5 > 1');
+    // *     returns 4: '1 < 5 5 > 1'
+
+    var key = '', allowed = false;
+    var matches = [];
+    var allowed_array = [];
+    var allowed_tag = '';
+    var i = 0;
+    var k = '';
+    var html = '';
+
+    var replacer = function (search, replace, str) {
+        return str.split(search).join(replace);
+    };
+
+    // Build allowes tags associative array
+    if (allowed_tags) {
+        allowed_array = allowed_tags.match(/([a-zA-Z0-9]+)/gi);
+    }
+
+    str += '';
+
+    // Match tags
+    matches = str.match(/(<\/?[\S][^>]*>)/gi);
+
+    // Go through all HTML tags
+    for (key in matches) {
+	
+		if(key){
+	
+			// Save HTML tag
+			html = matches[key].toString();
+	
+			// Is tag not in allowed list? Remove from str!
+			allowed = false;
+	
+			// Go through all allowed tags
+			for (k in allowed_array) {
+	
+				if(k){
+		
+					// Init
+					allowed_tag = allowed_array[k];
+					i = -1;
+		
+					if (i != 0) { i = html.toLowerCase().indexOf('<'+allowed_tag+'>');}
+					if (i != 0) { i = html.toLowerCase().indexOf('<'+allowed_tag+' ');}
+					if (i != 0) { i = html.toLowerCase().indexOf('</'+allowed_tag)   ;}
+		
+					// Determine
+					if (i == 0) {
+						allowed = true;
+						break;
+					}
+				
+				}
+			}
+	
+			if (!allowed) {
+				str = replacer(html, "", str); // Custom replace. No regexing
+			}
+
+        }
+    }
+
+    return str;
+}
+
 var win = Titanium.UI.createWindow({
 	title:"Window",
 	backgroundImage:"bkg3.png"
@@ -34,6 +128,13 @@ var w4Window = Ti.UI.createWindow({
 	backgroundImage:'bkg3.png',
    	// backButtonTitle:'Back',
    	navBarHidden:true
+});
+
+var w4PreviewWindow = Ti.UI.createWindow({
+	backgroundImage:'bkg3.png',
+   	backButtonTitle:'Back',
+   	title:"Preview"
+   	// navBarHidden:true
 });
 
 var w4WebViewWindow = Ti.UI.createWindow({
@@ -155,11 +256,31 @@ function displayItems(itemList){
 		
 		var title = null;
 		var postUrl = null;
-		
+		// var postContent = null;
+		// var postImage = null;
+		if(itemList.item(c).getElementsByTagName("content:encoded") != null){
 			// Item title
 			title = itemList.item(c).getElementsByTagName("title").item(0).text;
 			// Item description
 			desc = itemList.item(c).getElementsByTagName("description").item(0).text;
+			descTagLess = strip_tags(desc);
+			// alert(desc);
+			// Get Post Elemets
+			
+			/*if(itemList.item(c).getElementsByTagName("content:encoded") != null){
+				postContent = itemList.item(c).getElementsByTagName("content:encoded").item(0);
+				Ti.API.info("postContent = " + postContent);
+				// alert(postContent);
+				if(postContent.getElementsByTagName("img") != null){
+					postImage = postContent.getElementsByTagName("img").getAttribute("src").text;
+					Ti.API.info("Post Image url = " + postImage[0]);
+				}
+			}*/
+			/*if(postContent != null ){
+				alert(postContent);
+			}*/
+			// Item images
+			
 			// Item URL
 			postUrl = itemList.item(c).getElementsByTagName('link').item(0).text;
 
@@ -167,9 +288,11 @@ function displayItems(itemList){
 			var row = Titanium.UI.createTableViewRow({
 				title: title,
 				postName: title,
-				postUrl: postUrl
+				postUrl: postUrl,
+				desc: descTagLess
 			});
 			
+			// Affixes row header
 			if(c == 0)
 			{
 				row.header = 'Xavier Website Feed';
@@ -177,18 +300,77 @@ function displayItems(itemList){
 
 			row.addEventListener('click', function (e){
 				
-				nav.open(w4WebViewWindow,{animated:true});
-					w4WebViewWindow.title = e.source.postName;
-					var w4WebView = Ti.UI.createWebView({
-	 				   url:e.source.postUrl
-					});
-
+				nav.open(w4PreviewWindow,{animated:true});
+				
+				// w4PreviewWindow.title = e.source.postName;
+				w4WebViewWindow.title = e.source.postName;
+				w4PreviewWindowTitleTextContainer = Titanium.UI.createView({
+					backgroundColor:'#fff',
+   					borderColor:'#ddd',
+   					borderWidth:1,
+   					borderRadius:10,
+   					width:"90%",
+    				height:"15%",
+    				top:30
+				});
+				w4PreviewWindowTitleText = Titanium.UI.createLabel({
+					color:'#333',
+					text:e.source.postName,
+					font:{fontSize:16,fontFamily:'Helvetica Neue Bold',fontStyle:"bold"},
+					textAlign:'center',
+					width:'75%',
+					height:'90%'
+				});
+				w4PreviewWindowTextContainer = Titanium.UI.createView({
+					backgroundColor:'#fff',
+   					borderColor:'#ddd',
+   					borderWidth:1,
+   					borderRadius:10,
+   					width:"90%",
+    				height:"50%",
+    				top:105
+				});
+				w4PreviewWindowText = Titanium.UI.createLabel({
+					color:'#999',
+					text:e.source.desc,
+					font:{fontSize:14,fontFamily:'Helvetica Neue'},
+					textAlign:'left',
+					width:'75%',
+					height:'90%'
+				});
+					
+				w4PreviewWindowTextContainer.add(w4PreviewWindowText);
+				w4PreviewWindow.add(w4PreviewWindowTextContainer);
+				w4PreviewWindowTitleTextContainer.add(w4PreviewWindowTitleText);
+				w4PreviewWindow.add(w4PreviewWindowTitleTextContainer);
+					
+				var goToWebViewBtn = Titanium.UI.createButton({
+					title:"Continue reading...",
+					borderColor:'#ddd',
+					borderWidth:1,
+   					borderRadius:10,
+					width:'90%',
+					height:50,
+					top:330
+				});
+					
+				w4PreviewWindow.add(goToWebViewBtn);
+				
+				var w4WebView = Ti.UI.createWebView({
+	 			   url:e.source.postUrl
+				});
+			
 				w4WebViewWindow.add(w4WebView);
+									
+				goToWebViewBtn.addEventListener("click", function(e){
+					nav.open(w4WebViewWindow,{animated:true});
+				});
 				
 			});
-						
+			
 			// Add the row to the data
 			data[c] = row;
+		}
 	}
 	
 	// create the table
@@ -209,6 +391,7 @@ function loadRSSFeed(url){
 	xhr.open('GET',url);
 	xhr.onload = function()
 	{
+		
 		try
 		{
 		// Now parse the feed XML 
@@ -223,26 +406,23 @@ function loadRSSFeed(url){
 		}
 		catch(E)
 		{
-			refreshButton.title = 'Problem connecting!'
+			// NOT WORKING
+			refreshButton.title = 'Problem connecting!';
+			alert(E);
 		}
 
 	};
-	refreshButton.title = 'Refreshing...';
+	
+	refreshButton.title = 'Loading...';
 	xhr.send();	
+	
 }
 
+//Initial loading of the RSS
 loadRSSFeed(url);
 
 /*
  * END NEW RSS
- */
-
-/*
- * TO DO: ADD A REFRESH OPTION
- */
-
-/*
- * End RSS code
  */
 
 var aboutButton = Ti.UI.createButton({
@@ -305,7 +485,7 @@ var aboutView = Ti.UI.createView({
 
 var devLogo = Ti.UI.createImageView({
     image:'xsdev-logo.png',
-    top:55,
+    top:60,
     width:100,
     height:100
 });
@@ -336,6 +516,17 @@ var xadWindow = Ti.UI.createWindow({
 
 
 developer1Label.addEventListener('click', function(e) {
+
+	nav.open(xadWindow,{animated:true});
+	var xadWebView = Ti.UI.createWebView({
+	    url:'http://developers.xaverians.com/'
+	});
+
+	xadWindow.add(xadWebView);
+
+});
+
+devLogo.addEventListener('click', function(e) {
 
 	nav.open(xadWindow,{animated:true});
 	var xadWebView = Ti.UI.createWebView({
