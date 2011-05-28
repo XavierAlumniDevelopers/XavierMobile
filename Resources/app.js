@@ -554,7 +554,8 @@ var developer1Label = Ti.UI.createLabel({
 var xadWindow = Ti.UI.createWindow({
 	title:"XavierAlumniDevelopers",
 	backgroundImage:'bkg3.png',
-	backButtonTitle:'Back'
+	backButtonTitle:'Back',
+	navBarHidden:false
 });
 
 
