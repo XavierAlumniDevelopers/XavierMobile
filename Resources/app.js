@@ -100,7 +100,8 @@ var win = Titanium.UI.createWindow({
 var tabGroup = Ti.UI.createTabGroup();
 
 var mainTabWindow = Titanium.UI.createWindow({
-	title:"Xavier Mobile"
+	title:"Xavier Mobile",
+	navBarHidden:true
 });
 
 mainTabWindow.add(tabGroup)
@@ -126,21 +127,22 @@ searchBar.addEventListener('return', function(e) {
 
 var w4Window = Ti.UI.createWindow({
 	backgroundImage:'bkg3.png',
+	title:'Xavier Mobile'
    	// backButtonTitle:'Back',
-   	navBarHidden:true
+   	// navBarHidden:true
 });
 
 var w4PreviewWindow = Ti.UI.createWindow({
 	backgroundImage:'bkg3.png',
    	backButtonTitle:'Back',
-   	title:"Preview"
-   	// navBarHidden:true
+   	title:"Preview",
+   	navBarHidden:false
 });
 
 var w4WebViewWindow = Ti.UI.createWindow({
 	backgroundImage:'bkg3.png',
    	backButtonTitle:'Back',
-   	// navBarHidden:true
+   	navBarHidden:false
 });
 
 var w4WindowTab = Ti.UI.createTab({
@@ -234,18 +236,18 @@ xhr.send();
  */
 
 var refreshButton = Titanium.UI.createButton({
-	systemButton:Titanium.UI.iPhone.SystemButton.REFRESH,
-	title:"Refresh",
-	width:340,
-	height:50,
-	top:320
+	systemButton:Titanium.UI.iPhone.SystemButton.REFRESH
+	//title:"Refresh",
+	//width:340,
+	//height:50,
+	//top:320
 });
 refreshButton.addEventListener('click',function()
 {
 	// reload feed
 	loadRSSFeed(url);	
 });
-w4Window.add(refreshButton)
+//w4Window.add(refreshButton)
 
 var url = 'http://developer.appcelerator.com/blog/feed';
 var data;
@@ -287,7 +289,7 @@ function displayItems(itemList){
 			// Create a table row for this item
 			var row = Titanium.UI.createTableViewRow({
 				// title: title,
-				height:60,
+				height:90,
 				postName: title,
 				postUrl: postUrl,
 				desc: descTagLess
@@ -296,12 +298,12 @@ function displayItems(itemList){
 			var rowTitle = Ti.UI.createLabel({
 				color:'#000',
 				text:title,
-				font:{fontSize:20,fontFamily:'Helvetica Neue',fontWeight:'bold'},
+				font:{fontSize:16,fontFamily:'Helvetica Neue',fontWeight:'bold'},
 				textAlign:'left',
-				height:24,
+				height:50,
 				top:8,
 				left:10,
-				width:'95%',
+				width:'90%',
 				postName: title,
 				postUrl: postUrl,
 				desc: descTagLess
@@ -310,10 +312,10 @@ function displayItems(itemList){
 			var rowDesc = Ti.UI.createLabel({
 				color:'#999',
 				text:descTagLess,
-				font:{fontSize:14,fontFamily:'Helvetica Neue'},
+				font:{fontSize:12,fontFamily:'Helvetica Neue'},
 				textAlign:'left',
 				height:15,
-				top:35,
+				top:60,
 				left:10,
 				width:'95%',
 				postName: title,
@@ -323,10 +325,10 @@ function displayItems(itemList){
 			row.add(rowDesc);
 			
 			// Affixes row header
-			if(c == 0)
+			/*if(c == 0)
 			{
 				row.header = 'Xavier Website Feed';
-			}
+			}*/
 
 			row.addEventListener('click', function (e){
 				
@@ -340,7 +342,7 @@ function displayItems(itemList){
    					borderWidth:1,
    					borderRadius:10,
    					width:"90%",
-    				height:"15%",
+    				height:"25%",
     				top:30
 				});
 				w4PreviewWindowTitleText = Titanium.UI.createLabel({
@@ -357,8 +359,8 @@ function displayItems(itemList){
    					borderWidth:1,
    					borderRadius:10,
    					width:"90%",
-    				height:"50%",
-    				top:105
+    				height:"40%",
+    				top:150
 				});
 				w4PreviewWindowText = Titanium.UI.createLabel({
 					color:'#999',
@@ -407,7 +409,7 @@ function displayItems(itemList){
 	feedTableView = Titanium.UI.createTableView({
 		data:data,
 		top:0,
-		height:320,
+		//height:320,
 		backgroundImage:"bkg3.png"
 	});
 	
@@ -433,18 +435,18 @@ function loadRSSFeed(url){
 		// Now add the items to a tableView
 		displayItems(itemList);
 		
-		refreshButton.title = 'Refresh'
+		//refreshButton.title = 'Refresh'
 		}
 		catch(E)
 		{
 			// NOT WORKING
-			refreshButton.title = 'Problem connecting!';
+			//refreshButton.title = 'Problem connecting!';
 			alert(E);
 		}
 
 	};
 	
-	refreshButton.title = 'Loading...';
+	//refreshButton.title = 'Loading...';
 	xhr.send();	
 	
 }
@@ -456,11 +458,11 @@ loadRSSFeed(url);
  * END NEW RSS
  */
 
-var aboutButton = Ti.UI.createButton({
+/*var aboutButton = Ti.UI.createButton({
 	title: "About"
-});
+});*/
 
-mainTabWindow.setRightNavButton(aboutButton);
+w4Window.setRightNavButton(refreshButton);
 //w4Window.add(searchBar);
 win.add(nav);
 win.open();
@@ -469,21 +471,21 @@ win.open();
  * ABOUT XS WINDOW
  */
 
-var aboutWindow = Ti.UI.createWindow({
+var aboutXSWindow = Ti.UI.createWindow({
 	title:"About XS",
-	navBarHidden:true
+	// navBarHidden:true
 });
 
-var aboutWindowTab = Ti.UI.createTab({
+var aboutXSWindowTab = Ti.UI.createTab({
 	title:"XS",
 	icon:'i-icon.png',
-	navBarHidden:true,
-	window:aboutWindow
+	// navBarHidden:true,
+	window:aboutXSWindow
 });
 
-tabGroup.addTab(aboutWindowTab);
+tabGroup.addTab(aboutXSWindowTab);
 
-var dummyAboutLabel = Ti.UI.createLabel({
+var dummyXSAboutLabel = Ti.UI.createLabel({
 	color:'#999',
 	text:'Insert "About XS" here.',
 	font:{fontSize:14,fontFamily:'Helvetica Neue'},
@@ -491,7 +493,7 @@ var dummyAboutLabel = Ti.UI.createLabel({
 	width:'auto'
 });
 
-aboutWindow.add(dummyAboutLabel);
+aboutXSWindow.add(dummyXSAboutLabel);
 
 /*
  * END ABOUT WINDOW
@@ -502,8 +504,18 @@ aboutWindow.add(dummyAboutLabel);
  */
 
 var aboutWindow = Titanium.UI.createWindow({
-    title:"About"
+    title:"About",
+    // navBarHidden:true
 });
+
+var aboutWindowTab = Ti.UI.createTab({
+	title:"About",
+	icon:'source-code-icon.png',
+	// navBarHidden:true,
+	window:aboutWindow
+});
+
+tabGroup.addTab(aboutWindowTab);
 
 var aboutView = Ti.UI.createView({
     backgroundColor:'#fff',
@@ -516,7 +528,7 @@ var aboutView = Ti.UI.createView({
 
 var devLogo = Ti.UI.createImageView({
     image:'xsdev-logo.png',
-    top:60,
+    top:50,
     width:100,
     height:100
 });
@@ -573,9 +585,9 @@ aboutView.add(developersLabel);
 aboutView.add(developer1Label);
 aboutWindow.add(aboutView);
 
-aboutButton.addEventListener('click', function(e) {
+/*aboutButton.addEventListener('click', function(e) {
 	nav.open(aboutWindow,{animated:true});
-});
+});*/
 
 /*
  * ABOUT WINDOW END
