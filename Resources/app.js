@@ -470,7 +470,7 @@ win.open();
 /*
  * ABOUT XS WINDOW
  */
-
+/*
 var aboutXSWindow = Ti.UI.createWindow({
 	title:"About XS",
 	// navBarHidden:true
@@ -494,7 +494,7 @@ var dummyXSAboutLabel = Ti.UI.createLabel({
 });
 
 aboutXSWindow.add(dummyXSAboutLabel);
-
+*/
 /*
  * END ABOUT WINDOW
  */
