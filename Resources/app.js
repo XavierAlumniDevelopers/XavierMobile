@@ -286,11 +286,41 @@ function displayItems(itemList){
 
 			// Create a table row for this item
 			var row = Titanium.UI.createTableViewRow({
-				title: title,
+				// title: title,
+				height:60,
 				postName: title,
 				postUrl: postUrl,
 				desc: descTagLess
 			});
+			
+			var rowTitle = Ti.UI.createLabel({
+				color:'#000',
+				text:title,
+				font:{fontSize:20,fontFamily:'Helvetica Neue',fontWeight:'bold'},
+				textAlign:'left',
+				height:24,
+				top:8,
+				left:10,
+				width:'95%',
+				postName: title,
+				postUrl: postUrl,
+				desc: descTagLess
+			});
+			row.add(rowTitle);
+			var rowDesc = Ti.UI.createLabel({
+				color:'#999',
+				text:descTagLess,
+				font:{fontSize:14,fontFamily:'Helvetica Neue'},
+				textAlign:'left',
+				height:15,
+				top:35,
+				left:10,
+				width:'95%',
+				postName: title,
+				postUrl: postUrl,
+				desc: descTagLess
+			});
+			row.add(rowDesc);
 			
 			// Affixes row header
 			if(c == 0)
@@ -316,10 +346,10 @@ function displayItems(itemList){
 				w4PreviewWindowTitleText = Titanium.UI.createLabel({
 					color:'#333',
 					text:e.source.postName,
-					font:{fontSize:16,fontFamily:'Helvetica Neue Bold',fontStyle:"bold"},
+					font:{fontSize:16,fontFamily:'Helvetica Neue',fontWeight:'bold'},
 					textAlign:'center',
 					width:'75%',
-					height:'90%'
+					height:'80%'
 				});
 				w4PreviewWindowTextContainer = Titanium.UI.createView({
 					backgroundColor:'#fff',
@@ -377,7 +407,8 @@ function displayItems(itemList){
 	feedTableView = Titanium.UI.createTableView({
 		data:data,
 		top:0,
-		height:320
+		height:320,
+		backgroundImage:"bkg3.png"
 	});
 	
 	// Add the tableView to the current window
