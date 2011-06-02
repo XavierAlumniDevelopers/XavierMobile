@@ -7,14 +7,14 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-<id>com.avantbox.xaviermobile</id>
-<name>Xavier Mobile</name>
-<version>0.1</version>
-<publisher>Xavier Alumni Developers</publisher>
-<url>http://developers.xaverians.com</url>
-<description>Xavier School Mobile App</description>
-<copyright>2011</copyright>
-<icon>appicon.png</icon>
+    <id>com.xaverians.developers.xaviermobile</id>
+    <name>Xavier Mobile</name>
+    <version>1.0</version>
+    <publisher>Xavier Alumni Developers</publisher>
+    <url>http://developers.xaverians.com</url>
+    <description/>
+    <copyright>2011 by Xavier Alumni Developers</copyright>
+    <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>default</statusbar-style>
