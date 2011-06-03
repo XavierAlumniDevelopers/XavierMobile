@@ -27,6 +27,9 @@ function strip_tags (str, allowed_tags) {
     // *     example 4: strip_tags('1 < 5 5 > 1');
     // *     returns 4: '1 < 5 5 > 1'
 
+	var url = 'http://developer.appcelerator.com/blog/feed';
+//var url = 'http://pipes.yahoo.com/pipes/pipe.run?_id=1dd14b3cfa6df4e718b7dee82118c78a&_render=rss';
+
     var key = '', allowed = false;
     var matches = [];
     var allowed_array = [];
@@ -249,7 +252,6 @@ refreshButton.addEventListener('click',function()
 });
 //w4Window.add(refreshButton)
 
-var url = 'http://pipes.yahoo.com/pipes/pipe.run?_id=1dd14b3cfa6df4e718b7dee82118c78a&_render=rss';
 var data;
 
 function displayItems(itemList){
