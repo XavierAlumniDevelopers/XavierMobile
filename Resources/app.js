@@ -1,28 +1,30 @@
+// this sets the background color of the master UIView (when there are no windows/tab groups on it)
+Titanium.UI.setBackgroundColor('#000');
+
 var data;
+var url 				= 'http://xaverians.com/rss';
 
-var url = 'http://developer.appcelerator.com/blog/feed';
-	//var url = 'http://pipes.yahoo.com/pipes/pipe.run?_id=1dd14b3cfa6df4e718b7dee82118c78a&_render=rss';
 
+// create tab group
+var tabGroup			= Titanium.UI.createTabGroup({id:'tabGroup1'});
+
+
+
+//
+// create base UI tab and root window
+//
 var win = Titanium.UI.createWindow({
 	title:"Window",
 	backgroundImage:"bkg3.png"
 });
 
-var tabGroup = Ti.UI.createTabGroup();
 
 var mainTabWindow = Titanium.UI.createWindow({
 	title:"Xavier Mobile",
 	navBarHidden:true
 });
 
-mainTabWindow.add(tabGroup)
-
-
-
-
-
-
-
+mainTabWindow.add(tabGroup);
 
 
 var nav = Titanium.UI.iPhone.createNavigationGroup({
@@ -77,7 +79,7 @@ tabGroup.addTab(w4WindowTab);
  */
 
 var aboutWindow = Titanium.UI.createWindow({
-    title:"XA::Developers",
+    title:"XA::Developers"
     // navBarHidden:true
 });
 
@@ -107,7 +109,7 @@ var developersLabel = Ti.UI.createLabel({
 	width:'auto',
     height: 'auto',
     top: 15,
-    textAlign:'center',
+    textAlign:'center'
 
 });
 
@@ -135,9 +137,9 @@ developersUrlLabel.addEventListener('click', function(e) {
 	var xadWebView = Ti.UI.createWebView({
 	    url:'http://developers.xaverians.com/'
 	});
-
+    
 	xadWindow.add(xadWebView);
-
+    xadWindow.open({modal:true});
 });
 
 var devLogo = Ti.UI.createImageView({
@@ -351,83 +353,162 @@ function strip_tags (str, allowed_tags) {
 
 function displayItems(itemList){
 
-	for (var c=0;c < itemList.length;c++){
+	var no_of_rows = itemList.length;
 		
-		var title = null;
-		var postUrl = null;
+	for (var c=0;c < no_of_rows;c++){
+		
+		var title 					= null;
+		var postUrl					= null;
 		// var postContent = null;
-		// var postImage = null;
-		if(itemList.item(c).getElementsByTagName("content:encoded") != null){
+		var postImage 				= null;
+		var postImageUrl 			= '';
+
+		var imageView				= null;
+		
+		var pubDate					= null;
+				
+		if(itemList.item(c).getElementsByTagName("title") != null){
 			// Item title
-			title = itemList.item(c).getElementsByTagName("title").item(0).text;
+			title 					= itemList.item(c).getElementsByTagName("title").item(0).text;
 			// Item description
-			desc = itemList.item(c).getElementsByTagName("description").item(0).text;
-			descTagLess = strip_tags(desc);
-			// alert(desc);
-			// Get Post Elemets
-			
-			/*if(itemList.item(c).getElementsByTagName("content:encoded") != null){
-				postContent = itemList.item(c).getElementsByTagName("content:encoded").item(0);
-				Ti.API.info("postContent = " + postContent);
-				// alert(postContent);
-				if(postContent.getElementsByTagName("img") != null){
-					postImage = postContent.getElementsByTagName("img").getAttribute("src").text;
-					Ti.API.info("Post Image url = " + postImage[0]);
-				}
-			}*/
-			/*if(postContent != null ){
-				alert(postContent);
-			}*/
-			// Item images
-			
+			desc 					= itemList.item(c).getElementsByTagName("description").item(0).text;
+			descTagLess 			= strip_tags(desc);
 			// Item URL
-			postUrl = itemList.item(c).getElementsByTagName('link').item(0).text;
+			postUrl 				= itemList.item(c).getElementsByTagName('link').item(0).text;
+			
+			// Item images
+			var x_start				= desc.indexOf('<img src="');
+			var x_end				= desc.indexOf('"/>');
+
+
+			pubDate					= itemList.item(c).getElementsByTagName("pubDate").item(0).text;
+			// Convert String Date to Date Object
+			var pubDateObj			= new Date(pubDate).toLocaleDateString();
+
+
+
+			//alert(pubDateObj);
+			// Check if we found an image!
+			if (x_start == -1)
+			{
+				// no image found!
+			}
+			else
+			{
+				postImageUrl 		= desc.substring(x_start+10, x_end);
+			}
+			
+
+			if (Titanium.Platform.name == 'android') {
+				// iphone moved to a single image property - android needs to do the same
+				imageView = Titanium.UI.createImageView({
+					url:postImageUrl,
+					width:70,
+					height:70,
+					top:0,
+					left:0
+				});
+			
+			}
+			else
+			{
+				imageView = Titanium.UI.createImageView({
+					image:postImageUrl,
+					width:70,
+					height:70,
+					top:0,
+					left:0
+				});
+				
+			}
+			
+
 
 			// Create a table row for this item
-			var row = Titanium.UI.createTableViewRow({
+			var row 				= Titanium.UI.createTableViewRow({
 				// title: title,
-				height:90,
+				height:70,
+				width: 'auto',
 				postName: title,
 				postUrl: postUrl,
-				desc: descTagLess
+				desc: descTagLess,
+				postImage: imageView,
+				rightImage: 'rightarrow.png'
 			});
 			
-			var rowTitle = Ti.UI.createLabel({
-				color:'#000',
+			var rowTitle 			= Ti.UI.createLabel({
+				color:'#003',
 				text:title,
 				font:{fontSize:16,fontFamily:'Helvetica Neue',fontWeight:'bold'},
-				textAlign:'left',
-				height:50,
-				top:8,
-				left:10,
-				width:'90%',
+				lineHeight:16,
+				height:30,
+				top: 5,
+				left: 80,
+				width:'auto',
+				verticalAlign: 'top',
+				textAlign: 'justify',
+				
 				postName: title,
 				postUrl: postUrl,
-				desc: descTagLess
+				desc: descTagLess,
+				postImage: imageView
+/* 				borderWidth: 1, */
 			});
-			row.add(rowTitle);
-			var rowDesc = Ti.UI.createLabel({
-				color:'#999',
-				text:descTagLess,
-				font:{fontSize:12,fontFamily:'Helvetica Neue'},
-				textAlign:'left',
-				height:15,
-				top:60,
-				left:10,
-				width:'95%',
-				postName: title,
-				postUrl: postUrl,
-				desc: descTagLess
-			});
-			row.add(rowDesc);
 			
-			// Affixes row header
-			/*if(c == 0)
+			var rowDesc 			= Ti.UI.createLabel({
+				color:'#555',
+				text:pubDateObj,
+				font:{fontSize:12,fontFamily:'Helvetica Neue', lineHeight:12},
+				textAlign:'justify',
+				height:30,
+				top:31,
+				left: 80,
+				width:'auto',
+				
+				
+				postName: title,
+				postUrl: postUrl,
+				desc: descTagLess,
+				postImage: imageView
+			});
+
+
+			// If title has 2 rows, move rowDesc down
+			if(title.length >= 30 && postImageUrl != '' || (title.length >= 40 && postImageUrl == ''))
 			{
-				row.header = 'Xavier Website Feed';
-			}*/
+				rowTitle.height = 40;
+				rowDesc.top = 41;
+			}
+			
+			
+			row.add(rowTitle);
+			row.add(rowDesc);
+
+						
+			if (postImageUrl == '') 
+			{
+				// if there's no image, move the title and description
+				rowTitle.left	= 10;
+				rowTitle.right 	= 10;
+				rowTitle.width	= '95%';
+				
+				if (typeof(rowDesc) == 'object')
+				{				
+					rowDesc.left 	= 10;
+					rowDesc.right 	= 10;
+					rowDesc.width 	= '95%';
+				}
+				
+					
+			}
+			else
+			{			
+				// Add image view
+				row.add(imageView);
+			}
 
 			row.addEventListener('click', function (e){
+				
 				
 				nav.open(w4PreviewWindow,{animated:true});
 				
@@ -439,39 +520,49 @@ function displayItems(itemList){
    					borderWidth:1,
    					borderRadius:10,
    					width:"90%",
-    				height:"25%",
+    				height:"15%",
     				top:30
 				});
 				w4PreviewWindowTitleText = Titanium.UI.createLabel({
 					color:'#333',
 					text:e.source.postName,
 					font:{fontSize:16,fontFamily:'Helvetica Neue',fontWeight:'bold'},
-					textAlign:'center',
-					width:'75%',
+					textAlign:'left',
+					width:'90%',
 					height:'80%'
 				});
+
+
+
+				w4PreviewWindowTitleTextContainer.add(w4PreviewWindowTitleText);
+				w4PreviewWindow.add(w4PreviewWindowTitleTextContainer);
+
+
 				w4PreviewWindowTextContainer = Titanium.UI.createView({
 					backgroundColor:'#fff',
    					borderColor:'#ddd',
    					borderWidth:1,
    					borderRadius:10,
    					width:"90%",
-    				height:"40%",
-    				top:150
+    				height:"55%",
+    				top:100
 				});
-				w4PreviewWindowText = Titanium.UI.createLabel({
-					color:'#999',
-					text:e.source.desc,
-					font:{fontSize:14,fontFamily:'Helvetica Neue'},
-					textAlign:'left',
-					width:'75%',
-					height:'90%'
-				});
+				
+					w4PreviewWindowText = Titanium.UI.createLabel({
+						color:'#444',
+						text:e.source.desc,
+						font:{fontSize:12,fontFamily:'Helvetica Neue'},
+						width:'90%',
+						height:"90%"
+					});	
+					// TODO: add image to preview page
+					//w4PreviewWindowTextContainer.add(e.source.imageView);
+					w4PreviewWindowTextContainer.add(w4PreviewWindowText);
+					w4PreviewWindow.add(w4PreviewWindowTextContainer);
+				//}
 					
-				w4PreviewWindowTextContainer.add(w4PreviewWindowText);
-				w4PreviewWindow.add(w4PreviewWindowTextContainer);
-				w4PreviewWindowTitleTextContainer.add(w4PreviewWindowTitleText);
-				w4PreviewWindow.add(w4PreviewWindowTitleTextContainer);
+
+
 					
 				var goToWebViewBtn = Titanium.UI.createButton({
 					title:"Continue reading...",
@@ -480,7 +571,7 @@ function displayItems(itemList){
    					borderRadius:10,
 					width:'90%',
 					height:50,
-					top:330
+					top:335
 				});
 					
 				w4PreviewWindow.add(goToWebViewBtn);
@@ -524,15 +615,16 @@ function loadRSSFeed(url){
 		
 		try
 		{
-		// Now parse the feed XML 
-		var xml = this.responseXML;
-		
-		var itemList = xml.documentElement.getElementsByTagName("item");
-		
-		// Now add the items to a tableView
-		displayItems(itemList);
-		
-		//refreshButton.title = 'Refresh'
+			// Now parse the feed XML 
+			var xml = this.responseXML;
+	
+			var itemList = xml.documentElement.getElementsByTagName("item");
+			
+			// Now add the items to a tableView		
+			displayItems(itemList);		
+
+			
+			//refreshButton.title = 'Refresh'
 		}
 		catch(E)
 		{
