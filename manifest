@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+#appname: Xavier Mobile
+#publisher: jayson
+#url: http://developers.xaverians.com
+#image: appicon.png
+#appid: com.avantbox.xaviermobile
+#desc: undefined
+#type: mobile
+#guid: a9e716af-7d6e-43e4-819c-e0e8e8ddade8
+=======
 #appname:Xavier Mobile
 #publisher:Xavier Alumni Developers
 #url:http://developers.xaverians.com
@@ -6,3 +16,4 @@
 #desc:Xavier Mobile App
 #type:mobile
 #guid:c658d101-5bbc-4d65-b8d0-8da72bb02b70
+>>>>>>> 722008f09fe92eaabffa7ea881613f5132ae6108
